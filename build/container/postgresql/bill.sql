@@ -1,0 +1,8 @@
+CREATE TABLE if NOT EXISTS public.bill (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	tax_code int4 NOT NULL,
+	price NUMERIC NULL
+) WITH (
+	OIDS=FALSE
+);

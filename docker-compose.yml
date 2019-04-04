@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: bash -c "wait-for-it.sh postgresql:5432 && go install -v github.com/naufalridho/tax-calculator && tax-calculator"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+    volumes:
+      - ./etc/tax-calculator:/etc/tax-calculator
+      - .:/go/src/github.com/naufalridho/tax-calculator
+
+  postgresql:
+    image: postgres
+    volumes:
+      - ./build/container/postgresql:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
