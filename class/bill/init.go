@@ -44,13 +44,13 @@ func GetAllBill(ctx context.Context, db *sqlx.DB) ([]*Bill, error) {
 
 	query, args, err := sqlx.In(getAllBill)
 	if err != nil {
-		return bill, fmt.Errorf("Failed to bind query, %s", err.Error())
+		return bill, fmt.Errorf("Failed to bind query. Err:, %s", err.Error())
 	}
 
 	query = db.Rebind(query)
 	err = db.Select(&bill, query, args...)
 	if err != nil {
-		return bill, fmt.Errorf("Failed to get bills, %s", err.Error())
+		return bill, fmt.Errorf("Failed to get bills. Err:, %s", err.Error())
 	}
 
 	return bill, nil
@@ -64,13 +64,13 @@ func GetBillbyID(ctx context.Context, db *sqlx.DB, id int64) (*Bill, error) {
 
 	query, args, err := sqlx.In(getBillbyID, id)
 	if err != nil {
-		return bill, fmt.Errorf("Failed to bind query, %s", err.Error())
+		return bill, fmt.Errorf("Failed to bind query. Err:, %s", err.Error())
 	}
 
 	query = db.Rebind(query)
 	err = db.Select(bill, query, args...)
 	if err != nil {
-		return bill, fmt.Errorf("Failed to get bill, %s", err.Error())
+		return bill, fmt.Errorf("Failed to get bill. Err:, %s", err.Error())
 	}
 
 	return bill, nil
@@ -82,18 +82,18 @@ func InsertBill(ctx context.Context, db *sqlx.DB, name string, code int, price f
 
 	tx, err := db.Beginx()
 	if err != nil {
-		return fmt.Errorf("Failed to start database transaction. Error: %s", err.Error())
+		return fmt.Errorf("Failed to start database transaction. Err: %s", err.Error())
 	}
 
 	query := tx.Rebind(insertBill)
 	_, err = tx.Exec(query, name, code, price)
 	if err != nil {
-		return fmt.Errorf("Failed to insert bills. Error: %s", err.Error())
+		return fmt.Errorf("Failed to insert bills. Err: %s", err.Error())
 	}
 
 	err = tx.Commit()
 	if err != nil {
-		return fmt.Errorf("Failed to commit database transaction. Error: %s", err.Error())
+		return fmt.Errorf("Failed to commit database transaction. Err: %s", err.Error())
 	}
 
 	return nil
